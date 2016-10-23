@@ -10,7 +10,7 @@
         "emitDecoratorMetadata": true,
         "sourceMap": true,
         "noEmit": true,
-        "inlineSource": true
+        "inlineSources": true
     },
     "include": [
         "src/**/*.ts"

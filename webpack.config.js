@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const AotPlugin = require('@ngtools/webpack').AotPlugin;
 
 module.exports = (envOptions) => {
     envOptions = envOptions || {};
@@ -17,13 +18,19 @@ module.exports = (envOptions) => {
             rules: [
                 { test: /\.html$/, loader: 'raw' },
                 { test: /\.css$/, loader: 'raw' },
-                { test: /\.ts/, loaders: ['awesome-typescript-loader', 'angular2-template-loader'] }
             ]
         },
         devtool: '#source-map',
     };
     if (envOptions.MODE === 'prod') {
+        config.module.rules.push(
+            { test: /\.ts$/, loaders: ['@ngtools/webpack'] }
+        );
         config.plugins = [
+            new AotPlugin({
+                tsConfigPath: './tsconfig.json',
+                entryModule: 'src/app/app.module#AppModule'
+            }),
             new webpack.optimize.UglifyJsPlugin({
                 beautify: false,
                 mangle: {
@@ -37,6 +44,10 @@ module.exports = (envOptions) => {
                 comments: false
             }),
         ];
+    } else {
+        config.module.rules.push(
+            { test: /\.ts$/, loaders: ['awesome-typescript-loader', 'angular2-template-loader'] }
+        );
     }
     return config;
 };
