@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "build:prod": "webpack --config webpack.config.js --env.MODE=prod"
   },
   "keywords": [],
   "author": "",
