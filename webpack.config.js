@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const AotPlugin = require('@ngtools/webpack').AotPlugin;
+const helpers = require('./helpers');
 
 module.exports = (envOptions) => {
     envOptions = envOptions || {};
@@ -8,7 +9,7 @@ module.exports = (envOptions) => {
             main: './src/main.ts'
         },
         output: {
-            path: './dist',
+            path: __dirname + '/dist',
             filename: '[name].bundle.js',
         },
         resolve: {
@@ -16,8 +17,8 @@ module.exports = (envOptions) => {
         },
         module: {
             rules: [
-                { test: /\.html$/, loader: 'raw' },
-                { test: /\.css$/, loader: 'raw' },
+                { test: /\.html$/, loader: 'raw-loader' },
+                { test: /\.css$/, loader: 'raw-loader' },
             ]
         },
         devtool: '#source-map',
@@ -29,7 +30,7 @@ module.exports = (envOptions) => {
         config.plugins = [
             new AotPlugin({
                 tsConfigPath: './tsconfig.json',
-                entryModule: 'src/app/app.module#AppModule'
+                entryModule: helpers.root('src/app/app.module#AppModule')
             }),
             new webpack.optimize.UglifyJsPlugin({
                 beautify: false,
@@ -46,7 +47,14 @@ module.exports = (envOptions) => {
         ];
     } else {
         config.module.rules.push(
-            { test: /\.ts$/, loaders: ['awesome-typescript-loader', 'angular2-template-loader'] }
+            {
+                test: /\.ts$/,
+                loaders: [
+                    'awesome-typescript-loader',
+                    'angular2-template-loader',
+                    'angular-router-loader'
+                ]
+            }
         );
     }
     return config;
