@@ -9,7 +9,7 @@ module.exports = (envOptions) => {
             main: './src/main.ts'
         },
         output: {
-            path: './dist',
+            path: __dirname + '/dist',
             filename: '[name].bundle.js',
         },
         resolve: {
@@ -52,7 +52,7 @@ module.exports = (envOptions) => {
                 loaders: [
                     'awesome-typescript-loader',
                     'angular2-template-loader',
-                    'angular2-router-loader'
+                    'angular-router-loader'
                 ]
             }
         );
